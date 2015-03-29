@@ -90,11 +90,20 @@ public class GcmIntentService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+<<<<<<< HEAD
                         .setSmallIcon(R.mipmap.ic_launcher)//drawable.iconic_stat_gcm)
                         .setContentTitle("ChatsUp")
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
                         .setContentText(msg);
+=======
+                        .setSmallIcon(R.drawable.ic_stat_name)//drawable.iconic_stat_gcm)
+                        .setContentTitle("ChatsUp")
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(msg))
+                        .setContentText(msg)
+                        .setAutoCancel(true);
+>>>>>>> origin/master
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());

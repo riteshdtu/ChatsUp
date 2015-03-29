@@ -35,17 +35,30 @@
                 <TextView
                     android:id="@+id/text_msg"
                     android:layout_width="wrap_content"
+<<<<<<< HEAD
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="cook"
+=======
+                    android:textColor="@android:color/black"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+>>>>>>> origin/master
                     android:padding="4dp"
                     android:paddingRight="8dp" />
                 <TextView
                     android:id="@+id/text2"
                     android:layout_width="wrap_content"
+<<<<<<< HEAD
                     android:layout_height="match_parent"
                     android:text="3/29/15 4/:44PM"
                     android:textAppearance="?android:attr/textAppearanceSmall"
+=======
+                    android:textColor="@android:color/black"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="12dp"
+>>>>>>> origin/master
                     android:padding="4dp"
                     android:paddingRight="8dp" />
 

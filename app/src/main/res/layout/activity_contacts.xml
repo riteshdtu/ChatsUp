@@ -7,5 +7,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/contact_list_view"
+<<<<<<< HEAD
         android:layout_gravity="center" />
+=======
+        android:layout_gravity="center"
+        android:background="#FFE4E4" />
+>>>>>>> origin/master
 </FrameLayout>

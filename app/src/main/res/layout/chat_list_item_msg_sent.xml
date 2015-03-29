@@ -35,15 +35,25 @@
                 android:id="@+id/text_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+<<<<<<< HEAD
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="cook"
+=======
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+>>>>>>> origin/master
                 android:padding="4dp"
                 android:paddingRight="8dp" />
             <TextView
                 android:id="@+id/text2"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+<<<<<<< HEAD
                 android:text="3/29/15 4/:44PM"
+=======
+                android:textSize="12dp"
+                android:textColor="@android:color/black"
+>>>>>>> origin/master
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:padding="4dp"
                 android:paddingRight="8dp" />

@@ -6,5 +6,9 @@
         <!--android:orderInCategory="100" app:showAsAction="never" />-->
     <item android:id="@+id/action_new_chat" android:title="New Chat"
         android:orderInCategory="100" app:showAsAction="ifRoom"
+<<<<<<< HEAD
         android:icon="@drawable/ic_new_chat"/>
+=======
+        android:icon="@drawable/ic_action_add_person"/>
+>>>>>>> origin/master
 </menu>

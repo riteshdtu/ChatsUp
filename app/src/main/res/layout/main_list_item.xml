@@ -10,6 +10,10 @@
         android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
+=======
+        android:textAppearance="?android:attr/textAppearanceLarge"
+>>>>>>> origin/master
         android:gravity="center_vertical"
         android:layout_weight="1" />
 
@@ -17,6 +21,10 @@
         android:id="@+id/text2"
         android:textColor="@android:color/black"
         android:layout_width="match_parent"
+<<<<<<< HEAD
+=======
+        android:textAppearance="?android:attr/textAppearanceMedium"
+>>>>>>> origin/master
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_weight="1" />

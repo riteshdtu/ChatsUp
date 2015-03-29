@@ -38,6 +38,11 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
 
     private static final String LOCAL_CONTACT_ID = "local_contact_id";
     private MyChatAdapter adapter;
+<<<<<<< HEAD
+=======
+    int mPosition = 0;
+    ListView listView;
+>>>>>>> origin/master
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -52,7 +57,36 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
+<<<<<<< HEAD
         ((ListView)findViewById(R.id.msg_list)).setSelection(adapter.getCount());
+=======
+        listView.setSelection(adapter.getCount());
+    }
+
+    /**
+     * Dispatch onPause() to fragments.
+     */
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPosition = listView.getSelectedItemPosition();
+    }
+
+    /**
+     * Dispatch onResume() to fragments.  Note that for better inter-operation
+     * with older versions of the platform, at the point of this call the
+     * fragments attached to the activity are <em>not</em> resumed.  This means
+     * that in some cases the previous state may still be saved, not allowing
+     * fragment transactions that modify the state.  To correctly interact
+     * with fragments in their proper state, you should instead override
+     * {@link #onResumeFragments()}.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if( mPosition>0)
+            listView.setSelection(mPosition);
+>>>>>>> origin/master
     }
 
     @Override
@@ -66,11 +100,20 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
         setContentView(R.layout.activity_chat);
         setTitle(getIntent().getStringExtra("CONTACT_NAME"));
 
+<<<<<<< HEAD
         final ListView listView = (ListView) findViewById(R.id.msg_list);
         listView.setDivider(null);
         adapter = new MyChatAdapter(this);
 
         listView.setAdapter(adapter);
+=======
+        listView = (ListView) findViewById(R.id.msg_list);
+        final ListView listViewLocal = listView;
+        listViewLocal.setDivider(null);
+        adapter = new MyChatAdapter(this);
+
+        listViewLocal.setAdapter(adapter);
+>>>>>>> origin/master
         Bundle bundle = new Bundle();
         final String contact_id = getIntent().getStringExtra(ContactsActivity.CONTACT_ID);
         bundle.putString(LOCAL_CONTACT_ID, contact_id);
@@ -80,7 +123,11 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
         editText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
                 listView.setSelection(adapter.getCount());
+=======
+                listViewLocal.setSelection(adapter.getCount());
+>>>>>>> origin/master
             }
         });
         button.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +154,11 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
 ////                    intent.putExtra(CONTENT_RESOLVER, getContentResolver());
 //                    startService(new Intent(getApplicationContext(), SendMessageService.class));
                     editText.setText("");
+<<<<<<< HEAD
                     listView.setSelection(adapter.getCount());
+=======
+                    listViewLocal.setSelection(adapter.getCount());
+>>>>>>> origin/master
                 }
             }
         });

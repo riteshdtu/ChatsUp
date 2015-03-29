@@ -4,6 +4,10 @@
         <corners android:bottomRightRadius="5dp" android:bottomLeftRadius="5dp"
             android:topLeftRadius="5dp" android:topRightRadius="5dp"/>
     <solid
+<<<<<<< HEAD
         android:color="#FF7979" >
+=======
+        android:color="@color/received_msg_color" >
+>>>>>>> origin/master
     </solid>
 </shape>

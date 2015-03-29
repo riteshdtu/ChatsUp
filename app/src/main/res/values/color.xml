@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="received_msg_color">#FFAFAF</color>
+    <color name="sent_msg_color">#FF5F5F</color>
+    <color name="primary_color_light">#FF4444</color>
+    <color name="primary_color_dark">#CC0000</color>
+    <color name="background_color">#FFE4E4</color>
+
+</resources>

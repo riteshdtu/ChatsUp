@@ -39,16 +39,28 @@
                     android:id="@+id/text_msg"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+<<<<<<< HEAD
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="cook"
+=======
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+>>>>>>> origin/master
                     android:paddingTop="@dimen/abc_action_bar_default_padding_material"
                     android:paddingLeft="@dimen/abc_button_padding_horizontal_material" />
                 <TextView
                     android:id="@+id/text2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+<<<<<<< HEAD
                     android:text="3/29/15 4/:44PM"
                     android:textAppearance="?android:attr/textAppearanceSmall"
+=======
+                    android:textColor="@android:color/black"
+
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="12dp"
+>>>>>>> origin/master
                     android:padding="@dimen/abc_action_bar_default_padding_material"
                     android:paddingLeft="@dimen/abc_button_padding_horizontal_material" />
 
