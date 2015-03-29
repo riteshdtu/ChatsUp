@@ -2,25 +2,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/darker_gray" >
+    android:background="#FFE4E4" >
 
     <ListView
         android:id="@+id/msg_list"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:dividerHeight="0dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white" >
-        <Button
+        <ImageView
             android:id="@+id/send_btn"
-            style="?android:attr/buttonStyleSmall"
+            android:minHeight="50dp"
+            android:maxHeight="50dp"
+            android:maxWidth="50dp"
+            android:minWidth="50dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="Send" />
+            android:text="Send"
+            android:src="@drawable/ic_action_send_now"
+            android:padding="0dp" />
         <EditText
             android:id="@+id/msg_edit"
             android:layout_width="match_parent"

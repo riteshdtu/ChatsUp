@@ -2,7 +2,30 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!--<item name="android:action">@style/MyActionBar</item>-->
+        <!--<item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>-->
+        <!--<item name="android:actionMenuTextColor">#FF0000</item>-->
     </style>
+
+    <!-- ActionBar styles -->
+    <!--<style name="MyActionBar">-->
+        <!--&lt;!&ndash;parent="@style/Widget.Holo.ActionBar">&ndash;&gt;-->
+        <!--&lt;!&ndash;<item name="android:titleTextStyle">@style/MyActionBarTitleText</item>&ndash;&gt;-->
+
+        <!--<item name="android:background">#FF0000</item>-->
+        <!--<item name="android:color">#FF0000</item>-->
+    <!--</style>-->
+
+    <!--<!- ActionBar title text -->
+    <!--<style name="MyActionBarTitleText"-->
+        <!--parent="@style/TextAppearance.Holo.Widget.ActionBar.Title">-->
+        <!--<item name="android:textColor">@color/actionbar_text</item>-->
+    <!--</style>-->
+
+    <!--<!- ActionBar tabs text styles -->
+    <!--<style name="MyActionBarTabText"-->
+        <!--parent="@style/Widget.Holo.ActionBar.TabText">-->
+        <!--<item name="android:textColor">@color/actionbar_text</item>-->
+    <!--</style>-->
 
 </resources>

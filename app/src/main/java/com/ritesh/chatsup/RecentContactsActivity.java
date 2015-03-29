@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -47,7 +48,8 @@ public class RecentContactsActivity  extends ActionBarActivity{
                 Cursor cursor = adapter.getCursor();
 //                int a = cursor.getInt(0);
                 String s = cursor.getString(1);
-                startChatActivity(s);
+                String name = ((TextView)view.findViewById(R.id.text_msg)).getText().toString();
+                startChatActivity(s,name);
             }
         });
 
@@ -80,9 +82,11 @@ public class RecentContactsActivity  extends ActionBarActivity{
         getLoaderManager().initLoader(0, null, loader);
     }
 
-    public void startChatActivity(String s) {
+    public void startChatActivity(String s,String name) {
         Intent intent = new Intent(mContext, ChatActivity.class);
         intent.putExtra(CONTACT_ID,s);
+        intent.putExtra("CONTACT_NAME", name);
+//        intent.putExtra("NAME",);
         startActivityForResult(intent, 101);
     }
 

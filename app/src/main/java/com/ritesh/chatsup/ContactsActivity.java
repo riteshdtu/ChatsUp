@@ -61,8 +61,10 @@ public class ContactsActivity extends ActionBarActivity implements LoaderManager
                 Cursor cursor = adapter.getCursor();
 //                int a = cursor.getInt(0);
                 String s = cursor.getString(1);
+                String name = cursor.getString(cursor.getColumnIndex(DataProvider.COL_NAME));
                 Intent intent = new Intent(mContext, ChatActivity.class);
                 intent.putExtra(CONTACT_ID, s);
+                intent.putExtra("CONTACT_NAME", name);
                 startActivityForResult(intent, 101);
             }
         });
@@ -82,25 +84,6 @@ public class ContactsActivity extends ActionBarActivity implements LoaderManager
         finish();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_contacts, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
 }
