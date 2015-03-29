@@ -42,10 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SetupNumberActivity"
-            android:label="@string/title_activity_setup_number" >
-        </activity>
 
         <provider
             android:name=".DataProvider"

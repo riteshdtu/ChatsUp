@@ -19,6 +19,8 @@ public class UpdateReceiver extends BroadcastReceiver {
 
         ContentResolver contentResolver = context.getContentResolver();
         Cursor cur = contentResolver.query(DataProvider.CONTENT_URI_PENDING_MSGS,null, null, null, null);
+
+//        Log.e("Update Receiver", "in service"+cur.getCount());
         if (cur.getCount() > 0 && isOnline(context)) {
             context.startService(new Intent(context, SendMessageService.class));
         }

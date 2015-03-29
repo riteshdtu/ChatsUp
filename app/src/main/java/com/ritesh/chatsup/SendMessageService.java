@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -22,8 +21,8 @@ import java.util.Map;
 
 public class SendMessageService extends Service {
 //    private static final String LOCAL_CONTACT_ID = "local_contact_id";
-    private static final int MAX_ATTEMPTS = 5;
-    private static final int BACKOFF_MILLI_SECONDS = 2000;
+    private static final int MAX_ATTEMPTS = 2;
+    private static final int BACKOFF_MILLI_SECONDS = 0;
     public SendMessageService() {
     }
 
@@ -33,7 +32,7 @@ public class SendMessageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e("Service", "in service");
+//        Log.e("Service", "in service");
         sendMessages();
     }
     private void sendMessages() {

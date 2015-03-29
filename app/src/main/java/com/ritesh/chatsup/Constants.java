@@ -10,7 +10,7 @@ public class Constants {
     public static final  String SERVER_URL_SEND = "http://ieeedtu.com/ritesh/send.php";
     public static final  String SERVER_URL_REGISTER = "http://ieeedtu.com/ritesh/register.php";
 
-    public static final String SENDER_ID = "388944******";
+    public static final String SENDER_ID = "388944274132";
 
 
     public static String getReadableDate(long time){

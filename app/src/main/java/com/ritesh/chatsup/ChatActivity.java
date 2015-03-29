@@ -87,8 +87,11 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
                     ContentValues contentValues = new ContentValues();
                     contentValues.put(DataProvider.COL_MSG, string);
                     contentValues.put(DataProvider.COL_CONTACT, contact_id);
-                    sendMessage(string, contact_id, contentValues);
-//                    getContentResolver().insert(DataProvider.CONTENT_URI_PENDING_MSGS, contentValues);
+
+
+
+
+                    sendMessage(string, contact_id);
                     contentValues.put(DataProvider.COL_RECEIVED, 0);
 //                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date date = new Date();
@@ -111,10 +114,10 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
         super.onBackPressed();
     }
 
-    private void sendMessage(final String msg, final String contact_id, final ContentValues contentValues) {
-        new AsyncTask<Void, Void, String[]>() {
+    private void sendMessage(final String msg, final String contact_id) {
+        new AsyncTask<Void, Void, String>() {
             @Override
-            protected String[] doInBackground(Void... params) {
+            protected String doInBackground(Void... params) {
                 String msgLocal = "";
                 String s = "";
                 try {
@@ -125,38 +128,41 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
                     params123.put(DataProvider.COL_MSG, msg);
                     params123.put(DataProvider.COL_CONTACT, contact_id);
                     params123.put("sender", numberStored);
-                    s = post(serverUrl, params123, 1);
+                    post(serverUrl, params123, 1);
 
                 } catch (IOException ex) {
-                    Log.e("", ex.toString());
+//                    Log.e("", ex.toString());
                     msgLocal = "Message could not be sent";
                 }
-                return new String[]{msgLocal,s};
+                return msgLocal;
             }
 
             @Override
-            protected void onPostExecute(String[] msg) {
-                if(msg[1].isEmpty() || !msg[0].isEmpty()) {
-                    getApplicationContext().getContentResolver().insert(DataProvider.CONTENT_URI_PENDING_MSGS, contentValues);
-                }
-                    if (!TextUtils.isEmpty(msg[0])) {
-                    Toast.makeText(getApplicationContext(), msg[0], Toast.LENGTH_LONG).show();
-                }
-//                stopService(new Intent(getApplicationContext(), SendMessageService.class));
-//                    return null;
+            protected void onPostExecute(String msg1) {
+                    if (!TextUtils.isEmpty(msg1)) {
+                        Toast.makeText(getApplicationContext(), msg1, Toast.LENGTH_LONG).show();
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put(DataProvider.COL_MSG, msg);
+                        contentValues.put(DataProvider.COL_CONTACT, contact_id);
+                        getContentResolver().insert(DataProvider.CONTENT_URI_PENDING_MSGS, contentValues);
+
+                        ContentResolver contentResolver = getApplicationContext().getContentResolver();
+                        Cursor cur = contentResolver.query(DataProvider.CONTENT_URI_PENDING_MSGS,null, null, null, null);
+//                        Log.e("testing",""+ cur.getCount());
+                    }
             }
-        }.execute(null,null,null);
+        }.execute(null, null, null);
     }
 
 
-    private static String post(String endpoint, Map<String, String> params, int maxAttempts) throws IOException {
+    private static void post(String endpoint, Map<String, String> params, int maxAttempts) throws IOException {
         long backoff = 0;
         String s = "";
         for (int i = 1; i <= maxAttempts; i++) {
 
             try {
-                s = post(endpoint, params);
-                return s;
+                post(endpoint, params);
+                return;
             } catch (IOException e) {
 
                 if (i == maxAttempts) {
@@ -166,18 +172,15 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
                     Thread.sleep(backoff);
                 } catch (InterruptedException e1) {
                     Thread.currentThread().interrupt();
-                    return "";
+                    return;
                 }
                 backoff *= 2;
             } catch (IllegalArgumentException e) {
                 throw new IOException(e.getMessage(), e);
             }
         }
-        return s;
-
     }
-    private static String post(String endpoint, Map<String, String> params) throws IOException {
-        String id_in_pending_msg="";
+    private static void post(String endpoint, Map<String, String> params) throws IOException {
         URL url;
         try {
             url = new URL(endpoint);
@@ -189,11 +192,7 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
         // constructs the POST body using the parameters
         while (iterator.hasNext()) {
             Map.Entry<String, String> param = iterator.next();
-            if(param.getKey().equals(DataProvider.COL_ID)){
-                id_in_pending_msg = param.getValue();
-            }else {
-                bodyBuilder.append(param.getKey()).append('=').append(param.getValue());
-            }
+            bodyBuilder.append(param.getKey()).append('=').append(param.getValue());
             if (iterator.hasNext()) {
                 bodyBuilder.append('&');
             }
@@ -214,7 +213,6 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
             // handle the response
             int status = conn.getResponseCode();
             if (status != 200) {
-                id_in_pending_msg="";
                 throw new IOException("Post failed with error code " + status);
             }
         } finally {
@@ -222,7 +220,6 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
                 conn.disconnect();
             }
         }
-        return id_in_pending_msg;
     }
 
     @Override
