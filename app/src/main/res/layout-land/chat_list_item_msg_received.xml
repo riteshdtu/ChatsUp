@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/abc_action_bar_default_padding_material">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="left"
+            android:padding="4dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageView"
+                android:src="@drawable/received_msg"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignBottom="@+id/linearlayout"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:id="@+id/linearlayout"
+                android:background="@drawable/msg_received_draw"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/imageView">
+
+                <TextView
+                    android:id="@+id/text_msg"
+                    android:layout_width="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:paddingTop="@dimen/abc_action_bar_default_padding_material"
+                    android:paddingLeft="@dimen/abc_button_padding_horizontal_material" />
+                <TextView
+                    android:id="@+id/text2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textSize="12dp"
+                    android:padding="@dimen/abc_action_bar_default_padding_material"
+                    android:textColor="@android:color/black"
+                    android:paddingLeft="@dimen/abc_button_padding_horizontal_material" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/space_left"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

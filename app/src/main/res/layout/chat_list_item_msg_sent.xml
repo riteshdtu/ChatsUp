@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/abc_action_bar_default_padding_material">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/space_left"/>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="right">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:id="@+id/linearlayout"
+            android:layout_toLeftOf="@+id/imageView"
+            android:background="@drawable/msg_sent_draw">
+            <!--android:background="#FF4444"-->
+            <!--style="@style/msg_sent"-->
+
+            <TextView
+                android:id="@+id/text_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:padding="4dp"
+                android:paddingRight="8dp" />
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="12dp"
+                android:textColor="@android:color/black"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:padding="4dp"
+                android:paddingRight="8dp" />
+
+            </LinearLayout>
+            <ImageView
+            android:layout_width="12dp"
+            android:layout_height="30dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/sent_msg"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/linearlayout"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
