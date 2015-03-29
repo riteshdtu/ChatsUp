@@ -27,6 +27,7 @@
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.ritesh.chatsup" />
             </intent-filter>
         </receiver>
@@ -61,7 +62,7 @@
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"
-            android:parentActivityName=".RecentContactsActivity">
+            android:parentActivityName=".RecentContactsActivity" >
         </activity>
 
         <service
@@ -76,7 +77,11 @@
             </intent-filter>
         </receiver>
 
-
+        <service
+            android:name=".SyncContactsService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

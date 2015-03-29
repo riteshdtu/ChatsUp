@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -71,7 +70,7 @@ public class SendMessageService extends Service {
             @Override
             protected void onPostExecute(String msg) {
                 if (!TextUtils.isEmpty(msg)) {
-                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
                 }
                 stopService(new Intent(getApplicationContext(), SendMessageService.class));
             }
