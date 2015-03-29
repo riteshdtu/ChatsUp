@@ -2,11 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-<<<<<<< HEAD
-    android:background="#FFE4E4" >
-=======
     android:background="@color/background_color" >
->>>>>>> origin/master
 
     <ListView
         android:id="@+id/msg_list"

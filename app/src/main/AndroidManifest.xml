@@ -51,12 +51,8 @@
 
         <activity
             android:name=".ContactsActivity"
-<<<<<<< HEAD
-            android:label="@string/title_activity_contacts" >
-=======
             android:label="@string/title_activity_contacts"
             android:parentActivityName=".RecentContactsActivity" >
->>>>>>> origin/master
         </activity>
         <activity
             android:name=".RecentContactsActivity"
