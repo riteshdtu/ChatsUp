@@ -84,7 +84,7 @@ public class MainActivity extends ActionBarActivity {
             //  GCM registration.
             if (checkPlayServices()) {
 
-                Button button = (Button) findViewById(R.id.registration_button);
+                final Button button = (Button) findViewById(R.id.registration_button);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -94,6 +94,7 @@ public class MainActivity extends ActionBarActivity {
                             Toast.makeText(getApplicationContext(), "Please enter a valid mobile number", Toast.LENGTH_SHORT).show();
                             return;
                         }
+                        button.setOnClickListener(null);
                         SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                         prefs.putString(getString(R.string.pref_owner_no_key), number);
                         prefs.apply();
