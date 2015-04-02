@@ -7,4 +7,7 @@
     <item android:id="@+id/action_call" android:title="Call"
         android:orderInCategory="100" app:showAsAction="ifRoom"
         android:icon="@drawable/ic_action_call"/>
+    <item android:id="@+id/action_share" android:title="Share Chat"
+        app:showAsAction="always"
+        app:actionProviderClass="android.support.v7.widget.ShareActionProvider"/>
 </menu>

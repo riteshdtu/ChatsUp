@@ -21,7 +21,20 @@ public class ContactsActivity extends ActionBarActivity implements LoaderManager
     final Context mContext = this;
     private SimpleCursorAdapter adapter;
     public static final String CONTACT_ID = "contact_id";
+    int mPosition = 0;
+    ListView listView;
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPosition = listView.getSelectedItemPosition();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if( mPosition>0)
+            listView.setSelection(mPosition);
+    }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -47,13 +60,14 @@ public class ContactsActivity extends ActionBarActivity implements LoaderManager
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
+        setTitle("Select Contact");
         adapter = new SimpleCursorAdapter(this,
                 R.layout.main_list_item,
                 null,
                 new String[]{DataProvider.COL_NAME, DataProvider.COL_CONTACT},
                 new int[]{R.id.text_msg, R.id.text2},
                 0);
-        ListView listView = (ListView)findViewById(R.id.contact_list_view);
+        listView = (ListView)findViewById(R.id.contact_list_view);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

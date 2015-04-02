@@ -62,9 +62,12 @@ public class GcmIntentService extends IntentService {
 //                Log.i("TAG", "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message.
 
+                String contactNo = intent.getStringExtra("sender");
+                if(contactNo.length() !=10)
+                    return;
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(DataProvider.COL_MSG, intent.getStringExtra("message"));
-                contentValues.put(DataProvider.COL_CONTACT, intent.getStringExtra("sender"));
+                contentValues.put(DataProvider.COL_CONTACT, contactNo);
                 contentValues.put(DataProvider.COL_RECEIVED, 1);
                 Date date = new Date();
                 long time = date.getTime();
@@ -84,7 +87,7 @@ public class GcmIntentService extends IntentService {
     private void sendNotification(String msg) {
         mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
-
+        mNotificationManager.cancelAll();
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, MainActivity.class), 0);
 

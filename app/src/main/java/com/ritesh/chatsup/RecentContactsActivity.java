@@ -25,28 +25,32 @@ public class RecentContactsActivity  extends ActionBarActivity{
     private RecentChatAdapter adapter;
     public static final String CONTACT_ID = "contact_id";
     ListView listView;
+    int mPosition = 0;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mPosition = listView.getSelectedItemPosition();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if( mPosition>0)
+            listView.setSelection(mPosition);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contacts);
-//        sendNotification("testing");
+        setTitle("ChatsUp");
         adapter = new RecentChatAdapter(getApplicationContext());
-//        adapter.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-//            @Override
-//            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-////                int i = cursor.getInt(0);
-//                view.(CONTACT_ID, i);
-//                return false;
-//            }
-//        });
         listView = (ListView)findViewById(R.id.contact_list_view);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = adapter.getCursor();
-//                int a = cursor.getInt(0);
                 String s = cursor.getString(1);
                 String name = ((TextView)view.findViewById(R.id.text_msg)).getText().toString();
                 startChatActivity(s,name);
@@ -66,7 +70,6 @@ public class RecentContactsActivity  extends ActionBarActivity{
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-//                Log.e("test", "loaderfinished");
                 adapter.swapCursor(data);
                 if(adapter.getCount() == 0){
                     Toast.makeText(getApplicationContext(),"No recent Chats. Select a contact from Menu to Chat with!",Toast.LENGTH_LONG).show();
@@ -86,17 +89,9 @@ public class RecentContactsActivity  extends ActionBarActivity{
         Intent intent = new Intent(mContext, ChatActivity.class);
         intent.putExtra(CONTACT_ID,s);
         intent.putExtra("CONTACT_NAME", name);
-//        intent.putExtra("NAME",);
         startActivityForResult(intent, 101);
     }
 
-    /**
-     * Dispatch incoming result to the correct fragment.
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

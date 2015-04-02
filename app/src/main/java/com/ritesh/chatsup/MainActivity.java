@@ -1,6 +1,7 @@
 package com.ritesh.chatsup;
 
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -95,7 +96,9 @@ public class MainActivity extends ActionBarActivity {
                             Toast.makeText(getApplicationContext(), "Please enter a valid mobile number", Toast.LENGTH_SHORT).show();
                             return;
                         }
+//                        Toast.makeText(getApplicationContext(), "Please Wait while you are being Registered!", Toast.LENGTH_LONG).show();
                         button.setOnClickListener(null);
+                        showRegisterDialog();
                         SharedPreferences.Editor prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
                         prefs.putString(getString(R.string.pref_owner_no_key), number);
                         prefs.apply();
@@ -107,6 +110,14 @@ public class MainActivity extends ActionBarActivity {
                 finish();
             }
         }
+    }
+
+    private void showRegisterDialog() {
+        ProgressDialog progress = new ProgressDialog(this);
+        progress.setTitle("Registering...");
+        progress.setMessage("Please Wait!");
+        progress.setCancelable(false);
+        progress.show();
     }
 
     private void startServiceForSyncContacts() {
@@ -228,13 +239,11 @@ public class MainActivity extends ActionBarActivity {
                 registrationIdCloudMessaging = getRegistrationId(context);
                 if(registrationIdCloudMessaging.isEmpty()) {
                     Toast.makeText(context, "Unable to register! Check your internet Connection and Try again Later!", Toast.LENGTH_LONG).show();
-                    //TODO: Try again dialog box
+                    //Try again dialog box
                     finish();
                 }else {
-                    //TODO:save on net db.
+                    //save on net db.
                     storeOnNetRegisteredValues();
-                    Toast.makeText(context, "Successfully Registered!!!", Toast.LENGTH_LONG).show();
-                    //TODO:dialog showing syncing contacts!!!
 //                    syncContacts();
                 }
             }
@@ -265,6 +274,8 @@ public class MainActivity extends ActionBarActivity {
             protected void onPostExecute(String msg) {
                 if (!TextUtils.isEmpty(msg)) {
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(context, "Successfully Registered!!!", Toast.LENGTH_LONG).show();
                 }
                 startRecentContactsActivityAndFinishMainActivity();
             }

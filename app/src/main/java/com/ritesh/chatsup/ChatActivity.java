@@ -1,5 +1,7 @@
 package com.ritesh.chatsup;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -7,16 +9,22 @@ import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,9 +50,11 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
     private MyChatAdapter adapter;
     int mPosition = 0;
     ListView listView;
+    ShareActionProvider mShareActionProvider;
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+//        setShareChatIntent();
         return new CursorLoader(this,
                 DataProvider.CONTENT_URI_ALL_MSGS,
                 new String[]{DataProvider.COL_ID, DataProvider.COL_MSG, DataProvider.COL_TIME, DataProvider.COL_CONTACT,DataProvider.COL_RECEIVED},
@@ -57,6 +67,9 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
         listView.setSelection(adapter.getCount());
+        if (mShareActionProvider != null) {
+            setShareChatIntent();
+        }
     }
 
     /**
@@ -96,6 +109,7 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
         setTitle(getIntent().getStringExtra("CONTACT_NAME"));
 
         listView = (ListView) findViewById(R.id.msg_list);
+        listView.setItemsCanFocus(true);
         final ListView listViewLocal = listView;
         listViewLocal.setDivider(null);
         adapter = new MyChatAdapter(this);
@@ -141,7 +155,31 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
                 }
             }
         });
+
+//        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//
+////                Toast.makeText(getApplicationContext(), "long", Toast.LENGTH_LONG).show();
+////                parent.
+////                showChatOptionsDialog();
+//                return false;
+//            }
+//        });
     }
+
+//    private void showChatOptionsDialog() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+////        builder.setTitle("Options");
+//
+//        ListView modeList = new ListView(this);
+//        String[] stringArray = new String[] { "Share"};
+//        ArrayAdapter<String> modeAdapter = new ArrayAdapter<String>(this, R.layout.dialog_layout, R.id.text1, stringArray);
+//        modeList.setAdapter(modeAdapter);
+//        builder.setView(modeList);
+//        final Dialog dialog = builder.create();
+//        dialog.show();
+//    }
 
     @Override
     public void onBackPressed() {
@@ -260,6 +298,10 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_chat_activity, menu);
+        MenuItem item = menu.findItem(R.id.action_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         return true;
     }
 
@@ -276,8 +318,51 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
 
             return true;
         }
+//        if (id == R.id.action_share) {
+//           // dialPhoneNumber(getIntent().getStringExtra(ContactsActivity.CONTACT_ID));
+//
+//            // Get the provider and hold onto it to set/change the share intent.
+////            ShareActionProvider mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+//
+////            Adapter adapter1 = listView.getAdapter();
+//
+//            return true;
+//        }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setShareChatIntent(){
+        StringBuilder builder = new StringBuilder();
+        String other_person = getIntent().getStringExtra("CONTACT_NAME");
+        for( int i=0;i<adapter.getCount();i++) {
+            Cursor c = (Cursor) adapter.getItem(i);
+            String msg1 = c.getString(c.getColumnIndex(DataProvider.COL_MSG));
+            int received = c.getInt(c.getColumnIndex(DataProvider.COL_RECEIVED));
+            if (received == 1) {
+                builder.append(other_person);
+                builder.append(" : ");
+                builder.append( msg1);
+                builder.append( "\n");
+            } else {
+                builder.append("Me : ");
+                builder.append( msg1);
+                builder.append( "\n");
+            }
+        }
+
+//            Log.e("" ,builder.toString());
+        mShareActionProvider.setShareIntent(createShareChatIntent(builder.toString()));
+    }
+
+    private Intent createShareChatIntent(String msg) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, msg);
+        return intent;
+    }
+
     public void dialPhoneNumber(String phoneNumber) {
         Intent intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phoneNumber));
