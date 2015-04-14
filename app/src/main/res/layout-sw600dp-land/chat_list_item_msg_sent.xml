@@ -10,31 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/space_left"/>
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:gravity="left"
+            android:gravity="right"
             android:padding="4dp">
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="30dp"
-                android:id="@+id/imageView"
-                android:src="@drawable/received_msg"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignBottom="@+id/linearlayout"/>
-
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="right"
                 android:id="@+id/linearlayout"
-                android:background="@drawable/msg_received_draw"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/imageView">
+                android:layout_toLeftOf="@+id/imageView"
+                android:background="@drawable/msg_sent_draw">
+                <!--android:background="#FF4444"-->
+                <!--style="@style/msg_sent"-->
 
                 <TextView
                     android:id="@+id/text_msg"
@@ -42,30 +38,29 @@
                     android:textColor="@android:color/black"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:paddingTop="@dimen/abc_action_bar_default_padding_material"
-                    android:paddingLeft="@dimen/abc_button_padding_horizontal_material"
+                    android:padding="4dp"
                     android:text="high"
-                    android:paddingRight="4dp" />
+                    android:paddingRight="8dp" />
                 <TextView
                     android:id="@+id/text2"
+                    android:text="4/9/15"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:textColor="@color/summary"
+                    android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textSize="12dp"
-                    android:text="4/9/15"
-                    android:textColor="@color/summary"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="4dp"
-                    android:paddingBottom="4dp" />
+                    android:padding="4dp"
+                    android:paddingRight="8dp" />
 
             </LinearLayout>
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="30dp"
+                android:id="@+id/imageView"
+                android:src="@drawable/sent_msg"
+                android:layout_alignParentRight="true"
+                android:layout_alignBottom="@+id/linearlayout"/>
         </RelativeLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/space_left"/>
 
     </LinearLayout>
 

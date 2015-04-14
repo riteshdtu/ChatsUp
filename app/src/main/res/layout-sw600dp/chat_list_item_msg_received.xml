@@ -26,7 +26,7 @@
                 android:layout_alignBottom="@+id/linearlayout"/>
 
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
@@ -41,24 +41,20 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/black"
-                    android:paddingTop="4dp"
-                    android:text="hiii"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="4dp"
-                    android:paddingBottom="0dp"
-                    android:password="false" />
+                    android:paddingTop="@dimen/abc_action_bar_default_padding_material"
+                    android:text="high"
+                    android:paddingLeft="@dimen/abc_button_padding_horizontal_material" />
                 <TextView
                     android:id="@+id/text2"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/summary"
+
                     android:text="4/9/15"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textSize="12dp"
-                    android:paddingLeft="@dimen/abc_button_padding_horizontal_material"
-                    android:paddingTop="0dp"
-                    android:paddingRight="@dimen/abc_button_padding_horizontal_material"
-                    android:paddingBottom="@dimen/abc_button_padding_horizontal_material" />
+                    android:padding="@dimen/abc_action_bar_default_padding_material"
+                    android:paddingLeft="@dimen/abc_button_padding_horizontal_material" />
 
             </LinearLayout>
         </RelativeLayout>

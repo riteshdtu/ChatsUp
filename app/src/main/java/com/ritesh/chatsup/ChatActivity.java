@@ -95,6 +95,9 @@ public class ChatActivity extends ActionBarActivity  implements LoaderManager.Lo
         super.onResume();
         if( mPosition>0)
             listView.setSelection(mPosition);
+        if (mShareActionProvider != null) {
+            setShareChatIntent();
+        }
     }
 
     @Override

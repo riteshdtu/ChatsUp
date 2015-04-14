@@ -9,16 +9,17 @@ import java.util.Date;
 public class Constants {
     public static final  String SERVER_URL_SEND = "http://ieeedtu.com/ritesh/send.php";
     public static final  String SERVER_URL_REGISTER = "http://ieeedtu.com/ritesh/register.php";
+    static SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("M/d/yy");
+    static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h:m a");
 
     public static final String SENDER_ID = "388944274132";
 
 
     public static String getReadableDate(long time){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
-        simpleDateFormat.toLocalizedPattern();
         Date date1 = new Date();
         date1.setTime(time);
-        return simpleDateFormat.format(date1);
+        return simpleDateFormat1.format(date1)+" "+simpleDateFormat2.format(date1);
     }
+
 
 }
