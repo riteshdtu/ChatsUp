@@ -1,13 +1,16 @@
 package com.ritesh.chatsup;
 
+import android.app.IntentService;
 import android.app.Service;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,11 +21,25 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class SendMessageService extends Service {
+public class SendMessageService extends IntentService {
 //    private static final String LOCAL_CONTACT_ID = "local_contact_id";
     private static final int MAX_ATTEMPTS = 2;
     private static final int BACKOFF_MILLI_SECONDS = 0;
     public SendMessageService() {
+        super("Send_Message_Service");
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        if(intent.getIntExtra(Constants.SEND_MESSAGE_KEY,-1) == 1)
+        {
+            String msg = intent.getStringExtra(Constants.MY_MESSAGE);
+            String contact_id = intent.getStringExtra(Constants.MY_CONTACT_ID);
+            sendMessageIndividual(msg,contact_id);
+        }
+        else{
+            sendMessages();
+        }
     }
 
     /**
@@ -32,7 +49,7 @@ public class SendMessageService extends Service {
     public void onCreate() {
         super.onCreate();
 //        Log.e("Service", "in service");
-        sendMessages();
+        //sendMessages();
     }
     private void sendMessages() {
         new AsyncTask<Void, Void, String>() {
@@ -75,6 +92,115 @@ public class SendMessageService extends Service {
                 stopService(new Intent(getApplicationContext(), SendMessageService.class));
             }
         }.execute(null, null, null);
+    }
+
+
+    private void sendMessageIndividual(final String msg, final String contact_id) {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                String msgLocal = "";
+                String s = "";
+                try {
+                    String serverUrl = Constants.SERVER_URL_SEND;
+                    ContentResolver contentResolver = getApplicationContext().getContentResolver();
+                    String numberStored = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(R.string.pref_owner_no_key), "");
+                    Map<String, String> params123 = new HashMap<String, String>();
+                    params123.put(DataProvider.COL_MSG, msg);
+                    params123.put(DataProvider.COL_CONTACT, contact_id);
+                    params123.put("sender", numberStored);
+                    postIndividual(serverUrl, params123, 1);
+
+                } catch (IOException ex) {
+//                    Log.e("", ex.toString());
+                    msgLocal = "Message could not be sent";
+                }
+                return msgLocal;
+            }
+
+            @Override
+            protected void onPostExecute(String msg1) {
+                if (!TextUtils.isEmpty(msg1)) {
+                    Toast.makeText(getApplicationContext(), msg1, Toast.LENGTH_LONG).show();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(DataProvider.COL_MSG, msg);
+                    contentValues.put(DataProvider.COL_CONTACT, contact_id);
+                    getContentResolver().insert(DataProvider.CONTENT_URI_PENDING_MSGS, contentValues);
+
+                    ContentResolver contentResolver = getApplicationContext().getContentResolver();
+                    Cursor cur = contentResolver.query(DataProvider.CONTENT_URI_PENDING_MSGS,null, null, null, null);
+//                        Log.e("testing",""+ cur.getCount());
+                }
+            }
+        }.execute(null, null, null);
+    }
+
+
+    private static void postIndividual(String endpoint, Map<String, String> params, int maxAttempts) throws IOException {
+        long backoff = 0;
+        String s = "";
+        for (int i = 1; i <= maxAttempts; i++) {
+
+            try {
+                postIndividual(endpoint, params);
+                return;
+            } catch (IOException e) {
+
+                if (i == maxAttempts) {
+                    throw e;
+                }
+                try {
+                    Thread.sleep(backoff);
+                } catch (InterruptedException e1) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                backoff *= 2;
+            } catch (IllegalArgumentException e) {
+                throw new IOException(e.getMessage(), e);
+            }
+        }
+    }
+    private static void postIndividual(String endpoint, Map<String, String> params) throws IOException {
+        URL url;
+        try {
+            url = new URL(endpoint);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("invalid url: " + endpoint);
+        }
+        StringBuilder bodyBuilder = new StringBuilder();
+        Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
+        // constructs the POST body using the parameters
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> param = iterator.next();
+            bodyBuilder.append(param.getKey()).append('=').append(param.getValue());
+            if (iterator.hasNext()) {
+                bodyBuilder.append('&');
+            }
+        }
+        String body = bodyBuilder.toString();
+        //Log.v(TAG, "Posting '" + body + "' to " + url);
+        byte[] bytes = body.getBytes();
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setFixedLengthStreamingMode(bytes.length);
+            conn.setRequestMethod("POST");
+            OutputStream out = conn.getOutputStream();
+            out.write(bytes);
+            out.close();
+            // handle the response
+            int status = conn.getResponseCode();
+            if (status != 200) {
+                throw new IOException("Post failed with error code " + status);
+            }
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
     }
 
 
