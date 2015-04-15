@@ -12,15 +12,14 @@ public class Constants {
     public static final  String SEND_MESSAGE_KEY = "send_message_key";
     public static final  String MY_MESSAGE = "my_message";
     public static final  String MY_CONTACT_ID = "my_contact_id";
-    static SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("M/d/yy");
-    static SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("h:mm a");
+    static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("M/d/yy h:mm a");
 
     public static final String SENDER_ID = "388944274132";
 
     public static String getReadableDate(long time){
         Date date1 = new Date();
         date1.setTime(time);
-        return simpleDateFormat1.format(date1)+" "+simpleDateFormat2.format(date1);
+        return simpleDateFormat.format(date1);
     }
 
 

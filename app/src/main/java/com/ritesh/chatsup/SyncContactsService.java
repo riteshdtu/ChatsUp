@@ -31,7 +31,7 @@ public class SyncContactsService extends Service {
                 ContentResolver contentResolver = getContentResolver();
                 Cursor cur = contentResolver.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null);
 
-                int i=0;
+                //int i=0;
                 if (cur.getCount() > 0) {
                     while (cur.moveToNext()) {
                         String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
@@ -76,7 +76,6 @@ public class SyncContactsService extends Service {
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-                //TODO:dialog showing all done successfully.. .continue!!!!
                 stopService(new Intent(getApplicationContext(), SyncContactsService.class));
             }
         }.execute();
