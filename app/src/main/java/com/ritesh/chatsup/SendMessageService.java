@@ -48,91 +48,64 @@ public class SendMessageService extends IntentService {
     @Override
     public void onCreate() {
         super.onCreate();
-//        Log.e("Service", "in service");
-        //sendMessages();
     }
     private void sendMessages() {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msgLocal = "";
-                try {
-                    String serverUrl = Constants.SERVER_URL_SEND;
-                    ContentResolver contentResolver = getApplicationContext().getContentResolver();
-                    String numberStored = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(R.string.pref_owner_no_key), "");
-                    Cursor cur = contentResolver.query(DataProvider.CONTENT_URI_PENDING_MSGS,null, null, null, null);
-                    if (cur.getCount() > 0) {
-                        while (cur.moveToNext()) {
-                            String msgToSend = cur.getString(cur.getColumnIndex(DataProvider.COL_MSG));
-                            String contact = cur.getString(cur.getColumnIndex(DataProvider.COL_CONTACT));
+        try {
+            String serverUrl = Constants.SERVER_URL_SEND;
+            ContentResolver contentResolver = getApplicationContext().getContentResolver();
+            String numberStored = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(R.string.pref_owner_no_key), "");
+            Cursor cur = contentResolver.query(DataProvider.CONTENT_URI_PENDING_MSGS,null, null, null, null);
+            if (cur.getCount() > 0) {
+                while (cur.moveToNext()) {
+                    String msgToSend = cur.getString(cur.getColumnIndex(DataProvider.COL_MSG));
+                    String contact = cur.getString(cur.getColumnIndex(DataProvider.COL_CONTACT));
 
-                            Map<String, String> params123 = new HashMap<String, String>();
-                            params123.put(DataProvider.COL_MSG, msgToSend);
-                            params123.put(DataProvider.COL_CONTACT, contact);
-                            params123.put("sender", numberStored);
-                            String s = post(serverUrl, params123, MAX_ATTEMPTS);
-                            if(!s.equals("")){
-                                getApplicationContext().getContentResolver().delete(DataProvider.CONTENT_URI_PENDING_MSGS,DataProvider.COL_ID+" = "+s,null);
-                            }
-                        }
+                    Map<String, String> params123 = new HashMap<String, String>();
+                    params123.put(DataProvider.COL_MSG, msgToSend);
+                    params123.put(DataProvider.COL_CONTACT, contact);
+                    params123.put("sender", numberStored);
+                    String s = post(serverUrl, params123, MAX_ATTEMPTS);
+                    if(!s.equals("")){
+                        getApplicationContext().getContentResolver().delete(DataProvider.CONTENT_URI_PENDING_MSGS,DataProvider.COL_ID+" = "+s,null);
                     }
-                    cur.close();
-
-                } catch (IOException ex) {
-                    msgLocal = "Message could not be sent";
                 }
-                return msgLocal;
             }
+            cur.close();
 
-            @Override
-            protected void onPostExecute(String msg) {
-                if (!TextUtils.isEmpty(msg)) {
-//                    Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-                }
-                stopService(new Intent(getApplicationContext(), SendMessageService.class));
-            }
-        }.execute(null, null, null);
+        }
+        catch (IOException ex) {
+        }
     }
 
 
     private void sendMessageIndividual(final String msg, final String contact_id) {
-        new AsyncTask<Void, Void, String>() {
-            @Override
-            protected String doInBackground(Void... params) {
-                String msgLocal = "";
-                String s = "";
-                try {
-                    String serverUrl = Constants.SERVER_URL_SEND;
-                    ContentResolver contentResolver = getApplicationContext().getContentResolver();
-                    String numberStored = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(R.string.pref_owner_no_key), "");
-                    Map<String, String> params123 = new HashMap<String, String>();
-                    params123.put(DataProvider.COL_MSG, msg);
-                    params123.put(DataProvider.COL_CONTACT, contact_id);
-                    params123.put("sender", numberStored);
-                    postIndividual(serverUrl, params123, 1);
+        String msgLocal = "";
+        try {
+            String serverUrl = Constants.SERVER_URL_SEND;
+            String numberStored = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(getString(R.string.pref_owner_no_key), "");
+            Map<String, String> params123 = new HashMap<String, String>();
+            params123.put(DataProvider.COL_MSG, msg);
+            params123.put(DataProvider.COL_CONTACT, contact_id);
+            params123.put("sender", numberStored);
+            postIndividual(serverUrl, params123, 1);
 
-                } catch (IOException ex) {
-//                    Log.e("", ex.toString());
-                    msgLocal = "Message could not be sent";
-                }
-                return msgLocal;
+        }
+        catch (IOException ex) {
+            msgLocal = "Message could not be sent";
+        }
+        finally {
+            if (!TextUtils.isEmpty(msgLocal)) {
+                Toast.makeText(getApplicationContext(), msgLocal, Toast.LENGTH_LONG).show();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(DataProvider.COL_MSG, msg);
+                contentValues.put(DataProvider.COL_CONTACT, contact_id);
+                getContentResolver().insert(DataProvider.CONTENT_URI_PENDING_MSGS, contentValues);
+
+                ContentResolver contentResolver = getApplicationContext().getContentResolver();
+                contentResolver.query(DataProvider.CONTENT_URI_PENDING_MSGS, null, null, null, null);
             }
+        }
 
-            @Override
-            protected void onPostExecute(String msg1) {
-                if (!TextUtils.isEmpty(msg1)) {
-                    Toast.makeText(getApplicationContext(), msg1, Toast.LENGTH_LONG).show();
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(DataProvider.COL_MSG, msg);
-                    contentValues.put(DataProvider.COL_CONTACT, contact_id);
-                    getContentResolver().insert(DataProvider.CONTENT_URI_PENDING_MSGS, contentValues);
-
-                    ContentResolver contentResolver = getApplicationContext().getContentResolver();
-                    Cursor cur = contentResolver.query(DataProvider.CONTENT_URI_PENDING_MSGS,null, null, null, null);
-//                        Log.e("testing",""+ cur.getCount());
-                }
-            }
-        }.execute(null, null, null);
     }
 
 
